@@ -1,17 +1,8 @@
 <?php
-
-//Inlude header & projectFunctions php files
-
 include 'inc/header.php';
-include 'inc/projectFunctions.php';
+include "inc/projectFunctions.php";
 
-
-$title = '';
-$date = '';
-$whatLearned = '';
-$resources = '';
-$timeSpent = '';
-$tag_list = '';
+$title = $date = $whatLearned = $resources = $timeSpent = $tag_list = '';
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
@@ -24,14 +15,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
   if (empty($title) || empty($date) || empty($timeSpent) || empty($whatLearned) || empty($resources) || empty($tag_list)) 
   {
-    $error_message = "Fill in the required fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags. Thank You";
+    $error_message = 'Please fill in the required fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags';
   } 
   else
   {
     if(addEntry($title,$date,$timeSpent,$whatLearned,$resources))
     {
       $id = getEntryID($title);
-
       if(editTags($tag_list,$id['id']))
       {
         header('Location: index.php');
@@ -40,53 +30,48 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     } 
     else 
     {
-      $error_message = "Sorry, entry was not entered. Please a entry.";
+      $error_message = 'Entry was not entered';
     }
   }
 }
 ?>
 
-<section>
-<div class="container">
-    <div class="new-entry">
+  <section>
+    <div class="container">
+      <div class="new-entry">
         <h2>New Entry</h2>
+          <?php
+            if (isset($error_message))
+            {
+              echo "<p class='message'>$error_message</p>";
+            }
+          ?>
+          <form method="post" action="createEntry.php">
+            <label for="title"> Title</label>
+            <input id="title" type="text" name="title" value="<?php echo htmlspecialchars($title); ?>">
+            <br>
 
-            <?php
-                if (isset($error_message))
-                {
-                    echo "<p class='message'>$error_message</p>";
-                }
-            ?>
+            <label for="date">Date</label>
+            <input id="date" type="date" name="date" value="<?php echo htmlspecialchars($date); ?>">
+            <br>
 
-            <form method="post" action="index.php">
-                
-                <label for="title"> Title</label>
-                <input id="title" type="text" name="title" value="<?php echo htmlspecialchars($title); ?>">
-                <br>
+            <label for="time-spent"> Time Spent</label>
+            <input id="time-spent" type="text" name="timeSpent" value="<?php echo htmlspecialchars($timeSpent); ?>">
+            <br>
 
-                <label for="date">Date</label>
-                <input id="date" type="date" name="date" value="<?php echo htmlspecialchars($date); ?>">
-                <br>
+            <label for="what-i-learned">What I Learned</label>
+            <textarea id="what-i-learned" rows="5" name="whatILearned"><?php echo htmlspecialchars($whatLearned); ?></textarea>
+            <label for="resources-to-remember">Resources to Remember</label>
+            <textarea id="resources-to-remember" rows="5" name="ResourcesToRemember"><?php echo htmlspecialchars($resources); ?></textarea>
+                        
+            <label for="tags">Tags</label>
+            <input id="tags" type="text" name="tags" value="<?php echo $tag_list;?>">
+            <br>
 
-                <label for="time-spent"> Time Spent</label>
-                <input id="time-spent" type="text" name="timeSpent" value="<?php echo htmlspecialchars($timeSpent); ?>">
-                <br>
-
-                <label for="what-i-learned">What I Learned</label>
-                <textarea id="what-i-learned" rows="5" name="whatILearned"><?php echo htmlspecialchars($whatLearned); ?></textarea>
-
-                <label for="resources-to-remember">Resources to Remember</label>
-                <textarea id="resources-to-remember" rows="5" name="ResourcesToRemember"><?php echo htmlspecialchars($resources); ?></textarea>
-
-                <label for="tags">Tags</label>
-                <input id="tags" type="text" name="tags" value="<?php echo $tag_list;?>">
-                <br>
-
-                <input type="submit" value="Publish Entry" class="button">
-                <a href="index.php" class="button button-secondary">Cancel</a>
-            </form>
+            <input type="submit" value="Publish Entry" class="button">
+              <a href="index.php" class="button button-secondary">Cancel</a>
+          </form>
         </div>
-</div>
-</section>
-
-<?php include 'inc/footer.php'; ?>
+      </div>
+    </section>
+  <?php include 'inc/footer.php'; ?>
