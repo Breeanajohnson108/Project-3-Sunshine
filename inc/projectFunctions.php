@@ -1,41 +1,46 @@
 <?php
 
+//Create aa function to get entries
 function getEntryShort($tag)
 {
   include ("databaseAccess.php");
+
   $sql = 'SELECT DISTINCT entries.title, entries.date, entries.id FROM entries
     JOIN entries_tags ON entries.id = entries_tags.entry_id
     JOIN tags ON entries_tags.tag_id = tags.tag_id';
+
   $where = '';
-
   if ($tag != '') 
-  {
+  { 
     $where = ' WHERE tags.tag_id = ?';
-    $orderby = ' ORDER BY date DESC';
-    try
-    {
-      $results = $db->prepare($sql . $where . $orderby);
-      if($tag != '')
-      {
-        $results->bindValue(1,$tag);
-      }
-    } 
-    catch (Exception $e)
-    {
-      echo "Unable to retrieve results.";
-      exit;
-    }
-
-    $results->execute();
-    $entries = $results->fetchAll();
-    return $entries;
   }
+
+  $orderby = ' ORDER BY date DESC';
+
+  try
+  {
+    $results = $db->prepare($sql . $where . $orderby);
+    if($tag != '')
+    {
+      $results->bindValue(1,$tag);
+    }
+  } 
+  catch (Exception $e)
+  {
+    echo "Unable to retrieve results.";
+    exit;
+  }
+  $results->execute();
+
+  $entries = $results->fetchAll();
+  return $entries;
 }
 
-
-function displayShortEntries($tag = '')
+//Create a function to display the entries
+function displayShortEntries($tag = NULL)
 {
   $entryShort = getEntryShort($tag);
+
   foreach ($entryShort as $key) 
   {
     $tags = getTags($key['id']);
@@ -52,34 +57,39 @@ function displayShortEntries($tag = '')
             echo '</a>';
         }
     }
-
     echo "</div>";
     echo "</article>";
   }
+
 }
 
+//Create a function to get the details of a journal entry
 function getDetailedEntry($id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   try
   {
     $results = $db->prepare("SELECT * FROM entries
       WHERE id = ?");
     $results->bindValue(1,$id,PDO::PARAM_INT);
     $results->execute();
-    $entries = $results->fetch(PDO::FETCH_ASSOC);
-  return $entries;
   } 
   catch (Exception $e)
   {
     echo "Unable to retrieve results.";
     exit;
   }
+
+  $entries = $results->fetch(PDO::FETCH_ASSOC);
+  return $entries;
 }
 
+//Create a function to get the tags 
 function getTags($id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   try 
   {
     $results = $db->prepare("SELECT tags.tag_id,tags.tag FROM tags
@@ -94,13 +104,16 @@ function getTags($id)
     echo "No tags retrieved";
     exit;
   }
+
   $tags = $results->fetchAll(PDO::FETCH_ASSOC);
   return $tags;
 }
 
+
 function getTagText($tag)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   try 
   {
     $results = $db->prepare("SELECT tag FROM tags
@@ -113,13 +126,16 @@ function getTagText($tag)
     echo "No tags retrieved";
     exit;
   }
+
   return $results->fetch(PDO::FETCH_ASSOC);
 }
 
+
 function getEntryID($title)
 {
-  include ("databaseAccess.php");
-  try
+  include("databaseAccess.php");
+
+  try 
   {
     $results = $db->prepare("SELECT id FROM entries
       WHERE title = ?");
@@ -131,13 +147,15 @@ function getEntryID($title)
     echo "No tags retrieved";
     exit;
   }
+
   return $results->fetch(PDO::FETCH_ASSOC);
 }
 
 function getTagID($tag)
 {
-  include ("databaseAccess.php");
-  try
+  include("databaseAccess.php");
+
+  try 
   {
     $results = $db->prepare("SELECT tag_id FROM tags
       WHERE tag = ?");
@@ -149,13 +167,16 @@ function getTagID($tag)
     echo "No tags retrieved";
     exit;
   }
+
   return $results->fetch(PDO::FETCH_ASSOC);
 }
 
 function addEntry($title,$date,$time_spent,$learned,$resources)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'INSERT INTO entries (title,date,time_spent,learned,resources) VALUES (?, ?, ?, ?, ?)';
+
   try
   {
     $results = $db->prepare($sql);
@@ -171,13 +192,16 @@ function addEntry($title,$date,$time_spent,$learned,$resources)
     echo "Unable to add entry: " . $e->getMessage();
     exit;
   }
+
   return $results;
 }
 
 function editEntry($title,$date,$time_spent,$learned,$resources,$id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'UPDATE entries SET title = ?, date = ?, time_spent = ?, learned = ?, resources = ? WHERE id = ?';
+
   try
   {
     $results = $db->prepare($sql);
@@ -194,22 +218,26 @@ function editEntry($title,$date,$time_spent,$learned,$resources,$id)
     echo "Unable to retrieve results: " . $e->getMessage();
     exit;
   }
+
     return $results;
 }
 
 function editTags($tag_list,$id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   // Make $tag_list into an array
   $tag_list = array_filter(explode(',',$tag_list),'strlen');
+
   // Get list of tags associated with this entry
   $associated_tags = getTagAssociated($id);
   for($i=0;$i<(count($associated_tags));$i++)
   {
     $associated_tags_array[] = $associated_tags[$i]['tag'];
   }
+
   //Check if entry tags are all associated
-  foreach($associated_tags_array as $key => $i)
+  foreach($associated_tags_array AS $key => $i)
   {
     if(!in_array($i,$tag_list))
     {
@@ -219,14 +247,16 @@ function editTags($tag_list,$id)
       removeTag($tag_id['tag_id'],$id);
     }
   }
+
   // Check if entered tags are already associated with the entry
-  foreach($tag_list as $key => $i)
+  foreach($tag_list AS $key => $i)
   {
     if(!in_array($i,$associated_tags_array))
     {
       //echo "$key is the key to '$i' and needs added to the association";
       // Check to see if tag is already created
       $tagChecked = checkTag($i);
+
       // if tag isn't found add tag
       $tag_name = trim(strtolower($i));
       if($tagChecked==0)
@@ -234,48 +264,59 @@ function editTags($tag_list,$id)
         addTag($tag_name);
         $tag_id = getTagID($tag_name);
       }
+
       // Tag isn't associated with the entry. Associate tag with the entry
       addTagAssociation($tag_id['tag_id'],$id);
     }
   }
+
   return true;
 }
 
 function checkTag($i)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $tag_name = trim($i);
+
   $sql = 'SELECT * FROM tags WHERE tag = ?';
   try
   {
     $results = $db->prepare($sql);
     $results->bindValue(1,$tag_name,PDO::PARAM_STR);
     $results->execute();
-  } catch (Exception $e)
+  } 
+  catch (Exception $e)
   {
     echo "Unable to retrieve results: " . $e->getMessage();
   }
+
   return $results->rowCount();
 }
 
 function addTag($tag_name)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'INSERT INTO tags(tag) VALUES(?)';
   try
   {
     $results = $db->prepare($sql);
     $results->bindValue(1,$tag_name,PDO::PARAM_STR);
     $results->execute();
-  } catch (Exception $e){
+  } 
+  catch (Exception $e)
+  {
     echo "Unable to retrieve results: " . $e->getMessage();
   }
+
   return $results;
 }
 
 function addTagAssociation($tag_id,$entry_id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'INSERT INTO entries_tags(tag_id,entry_id)
     VALUES(?,?)';
   try
@@ -289,12 +330,14 @@ function addTagAssociation($tag_id,$entry_id)
   {
     echo "Unable to insert results: " . $e->getMessage();
   }
+
   return $results;
 }
 
 function removeTag($tag_id,$entry_id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'DELETE FROM entries_tags
     WHERE tag_id = ? AND entry_id = ?';
   try
@@ -308,12 +351,14 @@ function removeTag($tag_id,$entry_id)
   {
     echo "Unable to insert results: " . $e->getMessage();
   }
+
   return $results;
 }
 
 function removeTagAssociation($entry_id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'DELETE FROM entries_tags
     WHERE entry_id = ?';
   try
@@ -326,12 +371,14 @@ function removeTagAssociation($entry_id)
   {
     echo "Unable to insert results: " . $e->getMessage();
   }
+
   return $results;
 }
 
 function getTagAssociated($id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'SELECT tag FROM tags
     JOIN entries_tags ON tags.tag_id = entries_tags.tag_id
     JOIN entries ON entries_tags.entry_id = entries.id
@@ -351,8 +398,10 @@ function getTagAssociated($id)
 
 function deleteEntry($id)
 {
-  include ("databaseAccess.php");
+  include("databaseAccess.php");
+
   $sql = 'DELETE FROM entries WHERE id=?';
+
   try
   {
     $results = $db->prepare($sql);
@@ -364,6 +413,7 @@ function deleteEntry($id)
     echo "Unable to retrieve results: " . $e->getMessage() . "<br />";
     return false;
   }
+
   if($results->rowCount() >0)
   {
     return true;
@@ -373,4 +423,5 @@ function deleteEntry($id)
     return false;
   }
 }
+
 ?>

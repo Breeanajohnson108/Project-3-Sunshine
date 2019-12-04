@@ -1,6 +1,7 @@
 <?php
 
 // Access the database
+
 try
 {
     $db = new PDO("sqlite:".__DIR__."/journal.db");
@@ -12,4 +13,5 @@ catch (Exception $e)
   echo $e->getMessage();
   exit;
 }
+
 ?>
