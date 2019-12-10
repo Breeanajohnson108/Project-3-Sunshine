@@ -1,0 +1,298 @@
+/* ==========================================================================
+   Global Styles
+   ========================================================================== */
+
+body 
+{
+	font-size: 16px;
+	background: rgb(174,46,90);
+	background: -moz-linear-gradient(180deg, rgba(174,46,90,1) 0%, rgba(245,134,132,1) 65%);
+	background: -webkit-linear-gradient(180deg, rgba(174,46,90,1) 0%, rgba(245,134,132,1) 65%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ae2e5a",endColorstr="#f58684",GradientType=1);
+	color: rgb(174,46,90);
+	font-family: 'Cousine', serif;
+	font-weight: 400;
+}
+.container 
+{
+	margin: 0 auto;
+	padding: 0 25px;
+}
+header .site-header 
+{
+	margin: 0 auto;
+	height: 95px;
+}
+header .logo i 
+{
+	color: #7d9ec5;
+	margin: 20px 0 0 -5px;
+	float: left;
+	font-size: 40px;
+	border: 2px solid #7d9ec5;
+}
+header .button 
+{
+	float: right;
+	margin: 33px 0 0 0;
+}
+footer 
+{
+	text-align: center;
+	padding: 35px 0;
+	border-top: 2px dotted #3C6E71;
+}
+
+
+
+/* ==========================================================================
+   Button Styles
+   ========================================================================== */
+
+.button 
+{
+	padding: 8px 10px 6px 10px;
+	   background: #f58684;
+	   border: 2px solid #7d9ec5;
+	   border-radius: 4px;
+	   text-decoration: none;
+	   color: #f9fbfa;
+	   position: relative;
+	   text-align: center;
+	   font-size: 14px;
+	   margin-bottom: 15px;
+}
+.button.button-secondary 
+{
+	background: #FFF;
+	   border: 2px solid #e1e1e1;
+	   color: #404a49;
+}
+.button.icon-right 
+{
+	padding-right: 30px;
+	top: -10px;
+}
+.button.icon-left 
+{
+	padding-left: 30px;
+	top: -10px;
+}
+.button.icon-right i 
+{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+}
+.button.icon-left i 
+{
+	position: absolute;
+	top: 3px;
+	left: 3px;
+}
+.button:focus 
+{
+	outline: 0;
+}
+
+
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+h1,
+h2,
+h3 
+{
+	margin: 0;
+	font-weight: 400;
+	line-height: 1em;
+	color: #7d9ec5;
+}
+h1 
+{
+	font-size: 44px;
+	margin-bottom: 12px;
+}
+h2 
+{
+	font-size: 32px;
+}
+h2 a 
+{
+	text-decoration: none;
+	color: #de8c93;
+}
+h3 
+{
+	font-size: 18px;
+	font-family: 'Work Sans', serif;
+	font-weight: 600;
+	text-transform: uppercase;
+}
+p 
+{
+	line-height: 1.8em;
+	font-size: 18px;
+}
+p a 
+{
+	border-bottom: 2px solid #468C98;
+	padding: 0;
+	color: #468C98;
+	text-decoration: none;
+}
+ul li 
+{
+	line-height: 1.8em;
+	font-size: 18px;
+}
+ul li a 
+{
+	border-bottom: 2px solid #678f89;
+	line-height: 1.8em;
+	color: #678f89;
+	text-decoration: none;
+}
+
+
+
+/* ==========================================================================
+   Page Styles
+   ========================================================================== */
+
+article
+{
+	background-color: #7d9ec5;
+	padding: 25px 0;
+	border-radius: 15px;
+}
+
+.entry-list,
+.edit-entry,
+.new-entry 
+{
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 70px 0 150px 0;
+}
+.edit-entry h2,
+.new-entry h2 
+{
+	margin-bottom: 35px;
+}
+.entry-list article 
+{
+	margin-bottom: 70px;
+	text-align: center;
+}
+.entry-list article:last-child 
+{
+	margin-bottom: 0;
+}
+.entry-list article h2 
+{
+	margin-bottom: 8px;
+}
+.entry-list.single 
+{
+	padding-bottom: 70px;
+}
+.entry-list.single time 
+{
+	font-size: 18px;
+}
+.entry 
+{
+	max-width: 800px;
+	margin: 75px auto 0 auto;
+	text-align: left;
+}
+.entry p 
+{
+	margin-bottom: 40px;
+}
+.edit 
+{
+	padding-bottom: 80px;
+	text-align: center;
+	margin: 0 auto;
+}
+.edit a 
+{
+	font-weight: 400;
+	text-transform: uppercase;
+	font-size: 18px;
+}
+.message
+{
+	display: block;
+  text-align: center;
+  background: red;
+  color: white;
+  font-weight: bold;
+}
+.tag
+{
+	display: block;
+	text-align: center;
+}
+a.journal-tag 
+{
+    border: 1px solid;
+    padding: 2px;
+    margin: 2px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+/* ==========================================================================
+   Form Styles
+   ========================================================================== */
+
+
+form label 
+{
+	display: block;
+	margin-bottom: 8px;
+}
+form input[type=text],
+form input[type=password],
+form input[type=date],
+form textarea 
+{
+	border: 2px solid #ADD9F4;
+	color: black;
+	font-size: 18px;
+	line-height: 1.8em;
+	padding:10px 13px;
+	margin-bottom: 30px;
+	border-radius: 4px;
+	width: calc(100% - 32px);
+}
+form input[type=text]:focus,
+form input[type=date]:focus,
+form input[type=password]:focus,
+form textarea:focus 
+{
+	outline: 0;
+	border-color: #678f89;
+	color: black;
+}
+form input[type=text]:hover,
+form input[type=date]:hover
+form textarea:hover 
+{
+	border-color: #678f89;
+	color: black;
+}
+.edit-entry form textarea,
+.new-entry form textarea 
+{
+	min-height: 200px;
+}
+input[type=submit] 
+{
+	margin-right: 5px;
+}
