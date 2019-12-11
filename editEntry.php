@@ -17,7 +17,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   $resources = trim(filter_input(INPUT_POST,'ResourcesToRemember',FILTER_SANITIZE_STRING));
   $tag_list = trim(filter_input(INPUT_POST,'tags',FILTER_SANITIZE_STRING));
 
-  if (empty($title) || empty($date) || empty($timeSpent) || empty($whatLearned) || empty($resources) || empty($tag_list)) 
+  if (empty($title) || empty($date) || empty($timeSpent) || empty($whatLearned) || empty($resources) || empty($tag_list))
+  {
   
       $error_message = 'Please fill in the required fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags';
   } 
