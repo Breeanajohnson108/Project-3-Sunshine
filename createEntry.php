@@ -1,9 +1,24 @@
 <?php
+/*
+**********************************************
+*         Creating New Entry Page            *
+*          By Breeanna Johnson               *
+**********************************************
+*/
+
 include 'inc/header.php';
-include "inc/projectFunctions.php";
+include "inc/myFunctions.php";
 
-$title = $date = $whatLearned = $resources = $timeSpent = $tag_list = '';
+//Creating empty variables
 
+$learned = " ";
+$date = " ";
+$resources = " ";
+$title = " ";
+$time = " ";
+$tags = " ";
+
+//Checking to see if request method is post
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $title = trim(filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING));
@@ -13,14 +28,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
   $resources = trim(filter_input(INPUT_POST,'ResourcesToRemember',FILTER_SANITIZE_STRING));
   $tag_list = trim(filter_input(INPUT_POST,'tags',FILTER_SANITIZE_STRING));
 
+  //Checking to see if variables are empty, and if everything is correct add entry to database and return to the home screen
   if (empty($title) || empty($date) || empty($timeSpent) || empty($whatLearned) || empty($resources) || empty($tag_list)) 
   {
-    $error_message = 'Please fill in the required fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags';
+    $error_message = 'Please fill in all fields';
   } 
   else
   {
-    if(addEntry($title,$date,$timeSpent,$whatLearned,$resources))
+    //Running the addEntry function which adds a entry to the database
+    if(addEntry($title, $date, $timeSpent, $whatLearned, $resources))
     {
+      //sending back to home page
       $id = getEntryID($title);
       if(editTags($tag_list,$id['id']))
       {
@@ -30,7 +48,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
     } 
     else 
     {
-      $error_message = 'Entry was not entered';
+      $error_message = 'Could not add new entry';
     }
   }
 }
@@ -74,4 +92,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         </div>
       </div>
     </section>
-  <?php include 'inc/footer.php'; ?>
+    <?php 
+    //including footer php file
+    include 'inc/footer.php'; 
+    ?>
