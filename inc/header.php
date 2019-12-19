@@ -1,3 +1,14 @@
+<?php
+/*
+*********************************************
+*            Header Section                 *
+*         By Breeanna Johnson               *
+*********************************************
+*/
+
+//Embedding the header sections
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
