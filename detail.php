@@ -1,11 +1,21 @@
 <?php
-include 'inc/header.php';
-include 'inc/projectFunctions.php';
+/*
+**********************************************
+*           Detail Entry Page                *
+*          By Breeanna Johnson               *
+**********************************************
+*/
 
+//including the header and myFunctions php file
+include 'inc/header.php';
+include 'inc/myFunctions.php';
+
+//Initializing variables
 $id = trim(filter_input(INPUT_GET,'id', FILTER_SANITIZE_NUMBER_INT));
 $entry = getDetailedEntry($id);
 $tags = getTags($id);
 
+//Deleting entry
 if(isset($_POST['delete']))
 {
   $delid = filter_input(INPUT_POST,'delete',FILTER_SANITIZE_NUMBER_INT);
@@ -29,6 +39,7 @@ if(isset($_POST['delete']))
   }
 }
 
+//Displaying error message
 if(isset($_GET['msg']))
 {
   $error_message = trim(filter_input(INPUT_GET,'msg', FILTER_SANITIZE_STRING));
@@ -84,4 +95,7 @@ if (isset($error_message))
               </form>
           </div>
         </section>
-<?php include 'inc/footer.php'; ?>
+        <?php 
+        //including footer php file
+        include 'inc/footer.php'; 
+        ?>
