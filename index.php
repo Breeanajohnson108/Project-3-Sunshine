@@ -1,9 +1,19 @@
 <?php
-include 'inc/header.php';
-include "inc/projectFunctions.php";
+/*
+**********************************************
+*               Home Page                    *
+*          By Breeanna Johnson               *
+**********************************************
+*/
 
+//including header and functions php files
+include 'inc/header.php';
+include "inc/myFunctions.php";
+
+//initializing an empty variable
 $tag = '';
 
+//Displaying error messages
 if(isset($_GET['msg']))
 {
   $error_message = trim(filter_input(INPUT_GET,'msg', FILTER_SANITIZE_STRING));
@@ -37,4 +47,7 @@ if (isset($error_message))
     </div>
 </section>
 
-<?php include 'inc/footer.php'; ?>
+<?php 
+//including footer php file
+include 'inc/footer.php'; 
+?>
