@@ -131,31 +131,6 @@ function getEntryID($title)
   //Including the access php file
   include("access.php");
 
-  //Using a try-catch block to get a entry id  and handling any mishaps
-  try 
-  {
-    $results = $db->prepare("SELECT id FROM entries
-      WHERE title = ?");
-    $results->bindValue(1,$title,PDO::PARAM_STR);
-    $results->execute();
-  } 
-  catch (Exception $e)
-  {
-    //Creating a error message
-    echo "Sorry!, Unabl to retrieve entry IDs.";
-    exit;
-  }
-
-  //Results are being returned
-  return $results->fetch(PDO::FETCH_ASSOC);
-}
-
-//Making a function to get entry id
-function getEntryID($title)
-{
-  //Including the access php file
-  include("access.php");
-
   //Using a try-catch block to get a entry id and handling any mishaps
   try 
   {
