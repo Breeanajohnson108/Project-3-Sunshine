@@ -1,13 +1,21 @@
 <?php
+/*
+**********************************************
+*            Edit Entry Page                 *
+*           By Breeanna Johnson              *
+**********************************************
+*/
 
-// ini_set("display_errors", "on");
+//Including the header and the myFunctions php files
 include 'inc/header.php';
-include "inc/projectFunctions.php";
+include "inc/myFunctions.php";
 
+//Initializing variables
 $id = trim(filter_input(INPUT_GET,'id', FILTER_SANITIZE_NUMBER_INT));
 $entry = getDetailedEntry($id);
 $tags = getTags($id);
 
+//Checking to see if request method is post
 if($_SERVER['REQUEST_METHOD'] == 'POST')
 {
   $title = trim(filter_input(INPUT_POST,'title',FILTER_SANITIZE_STRING));
@@ -19,11 +27,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
   if (empty($title) || empty($date) || empty($timeSpent) || empty($whatLearned) || empty($resources) || empty($tag_list))
   {
-  
-      $error_message = 'Please fill in the required fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags';
+      //Alerting users to fill in every field 
+      $error_message = 'Fill in All fields: Title, Date, Time Spent, What I Learned, Resources To Remember, Tags';
   } 
   else
   {
+    //getting changes from user
     if(editEntry($title,$date,$timeSpent,$whatLearned,$resources,$id)){
       if(editTags($tag_list,$id)){
         header('Location: detail.php?id='.$id);
@@ -31,12 +40,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
       } 
       else 
       {
-        $error_message = 'Tags not updated';
+        //Creating a error message
+        $error_message = "Sorry!, Can't update entry.";
       }
     } 
     else 
     {
-      $error_message = 'Entry was not updated.';
+      //Creating a error message
+      $error_message = "Sorry!, Can't update entry.";
     }
   }
 } 
@@ -66,6 +77,7 @@ else
                     <h2>Edit Entry</h2>
                     <p>All fields are required.</p>
                     <?php
+                    //Displaying error message
                     if (isset($error_message))
                     {
                       echo "<p class='message'>$error_message</p>";
@@ -91,4 +103,7 @@ else
                 </div>
             </div>
         </section>
-<?php include 'inc/footer.php'; ?>
+        <?php 
+        //including footer php file
+        include 'inc/footer.php'; 
+        ?>
