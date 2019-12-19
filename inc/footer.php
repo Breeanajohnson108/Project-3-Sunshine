@@ -1,6 +1,16 @@
+<?php
+/*
+*********************************************
+*            Footer Section                 *
+*         By Breeanna Johnson               *
+*********************************************
+*/
+
+//Embedding the footer section
+?>
     <footer>
         <div>
-            &copy; <?php echo date('Y');?> Breeanna Johnson
+            &copy; My Journal Entries By Breeanna Johnson
         </div>
     </footer>
 </body>
